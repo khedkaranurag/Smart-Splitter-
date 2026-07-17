@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SplitSmart — Settle Up</title>
+  <meta name="description" content="Graph minimization algorithm visualization — settle all debts with the fewest transactions." />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <!-- D3.js for graph visualization -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button class="btn btn-ghost btn-sm" id="back-btn">← Back to Group</button>
+    <div class="brand" style="font-size:1rem;">
+      <div class="brand-icon" style="width:28px;height:28px;font-size:0.85rem;">💸</div>
+      <span>Settle Up</span>
+    </div>
+  </div>
+  <div class="navbar-actions">
+    <div class="avatar avatar-sm" id="nav-avatar" style="background:#7c3aed">?</div>
+    <span class="text-sm" id="nav-name"></span>
+  </div>
+</nav>
+
+<div class="settle-container" id="app">
+
+  <!-- Hero -->
+  <div class="settle-hero animate-in">
+    <h1>⚡ Graph Settlement<br><span style="background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Optimizer</span></h1>
+    <p id="settle-subtitle" class="text-secondary">Computing minimum transactions for <strong id="group-name-display">your group</strong>...</p>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="settle-stats" id="settle-stats" style="display:none;">
+    <div class="card settle-stat-card animate-in">
+      <div class="settle-stat-num" id="stat-members" style="color:var(--accent-teal)">—</div>
+      <div class="settle-stat-label">Members</div>
+    </div>
+    <div class="card settle-stat-card animate-in" style="animation-delay:0.1s">
+      <div class="settle-stat-num" id="stat-before" style="color:var(--danger)">—</div>
+      <div class="settle-stat-label">Naive Transactions</div>
+    </div>
+    <div class="card settle-stat-card animate-in" style="animation-delay:0.2s">
+      <div class="settle-stat-num" id="stat-after" style="color:var(--success)">—</div>
+      <div class="settle-stat-label">After Optimization</div>
+    </div>
+  </div>
+
+  <!-- Graph Area -->
+  <div class="graph-area" id="graph-area">
+    <span class="graph-label" id="graph-label">LOADING...</span>
+    <div id="loading-state" style="display:flex;align-items:center;justify-content:center;height:300px;gap:12px;">
+      <div class="spinner"></div>
+      <span class="text-secondary">Fetching group data...</span>
+    </div>
+    <svg id="settle-graph" width="100%" height="360" style="display:none;"></svg>
+  </div>
+
+  <!-- Optimized Transactions List -->
+  <div id="transactions-area" style="display:none;">
+    <div class="section-header">
+      <span class="section-title">Optimized Transactions</span>
+      <span class="badge badge-green" id="tx-count-badge"></span>
+    </div>
+    <div class="settle-transactions" id="transactions-list"></div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="settle-actions" id="settle-actions" style="display:none;">
+    <button class="btn btn-secondary btn-lg" onclick="window.location.href='group.html?id='+groupId">
+      ← Cancel
+    </button>
+    <button class="btn btn-primary btn-lg" id="optimize-btn" onclick="runOptimization()">
+      <span class="btn-text">🧠 Optimize Transactions</span>
+    </button>
+    <button class="btn btn-teal btn-lg" id="confirm-btn" style="display:none;" onclick="confirmSettlement()">
+      <span class="btn-text">✅ Confirm & Archive Group</span>
+    </button>
+  </div>
+
+  <!-- All Settled State -->
+  <div id="all-settled" style="display:none;">
+    <div class="empty-state">
+      <div class="empty-icon">🎉</div>
+      <h3>All balanced!</h3>
+      <p>Everyone in this group has a net balance of zero. Nothing to settle!</p>
+      <button class="btn btn-secondary mt-md" onclick="window.location.href='group.html?id='+groupId">
+        ← Back to Group
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/settle.js"></script>
+
+</body>
+</html>

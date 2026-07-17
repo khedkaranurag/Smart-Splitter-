@@ -1,0 +1,599 @@
+/* ═══════════════════════════════════════════════════════════════
+   SplitSmart — pages.css
+   Page-specific layouts for all 5 pages
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Login / Auth Page ─────────────────────────────────────────── */
+.auth-container {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-left {
+  position: relative;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  overflow: hidden;
+}
+
+.auth-left-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.auth-tagline {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-lg);
+}
+
+.auth-tagline span {
+  background: var(--grad-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+/* Floating graph SVG animation behind left panel */
+.auth-bg-graph {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.auth-stats {
+  margin-top: var(--space-2xl);
+  display: flex;
+  gap: var(--space-xl);
+}
+
+.auth-stat {
+  text-align: center;
+}
+
+.auth-stat-num {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  background: var(--grad-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.auth-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl) var(--space-2xl);
+}
+
+.auth-form-box {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-form-box .brand { margin-bottom: var(--space-2xl); }
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-lg);
+}
+
+.auth-switch a { font-weight: 600; }
+
+/* ── Dashboard Page ────────────────────────────────────────────── */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.dashboard-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.dashboard-greeting {
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-sm);
+}
+
+.dashboard-greeting span {
+  background: var(--grad-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.group-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.group-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--grad-hero);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.group-card:hover::before { opacity: 1; }
+
+.group-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.group-type-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.group-card-name {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+  cursor: pointer;
+}
+
+.group-card-meta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.group-card-members {
+  display: flex;
+  margin-top: var(--space-md);
+}
+
+.group-card-members .avatar {
+  width: 28px;
+  height: 28px;
+  font-size: var(--text-xs);
+  border: 2px solid var(--bg-secondary);
+  margin-left: -8px;
+}
+
+.group-card-members .avatar:first-child { margin-left: 0; }
+
+.group-card-members .more-count {
+  width: 28px;
+  height: 28px;
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-left: -8px;
+}
+
+.group-card-balance {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--glass-border);
+  font-size: var(--text-sm);
+}
+
+/* FAB — Create Group */
+.fab {
+  position: fixed;
+  bottom: var(--space-xl);
+  right: var(--space-xl);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--grad-purple);
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(124,58,237,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  z-index: var(--z-dropdown);
+}
+
+.fab:hover {
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 12px 32px rgba(124,58,237,0.65);
+}
+
+/* ── Group Chat Page ───────────────────────────────────────────── */
+.group-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+/* Left sidebar */
+.group-sidebar {
+  border-right: 1px solid var(--glass-border);
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.group-sidebar-header h2 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.sidebar-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.sidebar-member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.sidebar-member:hover { background: var(--glass-bg); }
+
+.sidebar-member-info { flex: 1; min-width: 0; }
+.sidebar-member-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-member-balance {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.balance-positive { color: var(--success); }
+.balance-negative { color: var(--danger); }
+.balance-zero     { color: var(--text-muted); }
+
+/* Center — chat feed */
+.group-feed-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(0,0,0,0.1);
+}
+
+.feed-header {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+.feed-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Expense item in feed */
+.expense-item {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  animation: slideInUp 0.3s ease both;
+}
+
+.expense-item:hover {
+  border-color: rgba(124,58,237,0.2);
+  background: var(--glass-hover);
+}
+
+.expense-body { flex: 1; min-width: 0; }
+.expense-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.expense-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.expense-amount {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.expense-meta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.expense-splits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.split-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* Right panel — add bill */
+.group-bill-panel {
+  border-left: 1px solid var(--glass-border);
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.bill-panel-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.bill-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.settle-cta {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--glass-border);
+}
+
+.settle-cta-desc {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+  text-align: center;
+}
+
+/* ── Settle / Algorithm Page ───────────────────────────────────── */
+.settle-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+.settle-hero {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.settle-hero h1 {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-md);
+}
+
+.settle-hero p { font-size: var(--text-lg); }
+
+.settle-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.settle-stat-card {
+  text-align: center;
+  padding: var(--space-lg);
+}
+
+.settle-stat-num {
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  margin-bottom: var(--space-xs);
+}
+
+.settle-stat-label { font-size: var(--text-sm); color: var(--text-muted); }
+
+/* Graph visualization area */
+.graph-area {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  min-height: 360px;
+  position: relative;
+  overflow: hidden;
+}
+
+.graph-label {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-lg);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.graph-arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  opacity: 0.15;
+  pointer-events: none;
+  display: none;
+}
+
+.settle-transactions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.transaction-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  animation: slideInUp 0.4s ease both;
+}
+
+.transaction-arrow {
+  font-size: 1.2rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.transaction-amount {
+  margin-left: auto;
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.settle-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+/* ── Create Group Page ─────────────────────────────────────────── */
+.create-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+.create-header {
+  margin-bottom: var(--space-2xl);
+  text-align: center;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.create-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.create-section-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .auth-container { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .group-layout { grid-template-columns: 240px 1fr; }
+  .group-bill-panel { display: none; }
+}
+
+@media (max-width: 768px) {
+  .group-layout { grid-template-columns: 1fr; }
+  .group-sidebar { display: none; }
+  .settle-stats { grid-template-columns: repeat(2, 1fr); }
+  .type-cards { grid-template-columns: repeat(2, 1fr); }
+  .groups-grid { grid-template-columns: 1fr; }
+  .navbar { padding: 0 var(--space-md); }
+}

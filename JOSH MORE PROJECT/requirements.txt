@@ -1,0 +1,21 @@
+# SPLITSMART - SYSTEM REQUIREMENTS
+# --------------------------------
+# This project uses Java Spring Boot for the backend and Vanilla JS for the frontend.
+# It does NOT use pip packages (there are no Python dependencies to install).
+# The only reason Python is used is for the built-in `http.server` module to host the frontend.
+
+# Below are the actual system dependencies required to run the project:
+
+Java==17.0
+Maven==3.9.6
+MySQL==8.4
+Python==3.10+ (Built-in standard library only, no pip installs needed)
+
+# How to install dependencies (Backend):
+# The Java backend dependencies (Spring Boot, JWT, WebSockets, MySQL Connector) 
+# are automatically downloaded by Maven via the `pom.xml` file.
+# You do not need to manually install them.
+
+# How to run:
+# Backend: cd backend && ..\apache-maven-3.9.6\bin\mvn.cmd spring-boot:run
+# Frontend: cd frontend && python -m http.server 3000

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SplitSmart — Create Group</title>
+  <meta name="description" content="Create a new expense group and invite your friends." />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button class="btn btn-ghost btn-sm" onclick="window.location.href='dashboard.html'">← Dashboard</button>
+    <div class="brand" style="font-size:1rem;">
+      <div class="brand-icon" style="width:28px;height:28px;font-size:0.85rem;">💸</div>
+      <span>SplitSmart</span>
+    </div>
+  </div>
+  <div class="navbar-actions">
+    <div class="avatar avatar-sm" id="nav-avatar" style="background:#7c3aed">?</div>
+    <span class="text-sm" id="nav-name"></span>
+  </div>
+</nav>
+
+<div class="create-container">
+  <div class="create-header animate-in">
+    <h1 style="font-size:var(--text-3xl);font-weight:800;letter-spacing:-0.03em;">
+      Create a Group
+    </h1>
+    <p class="text-secondary mt-md">Choose a type, name your group, and invite members to start splitting.</p>
+  </div>
+
+  <form class="create-form" id="create-form" onsubmit="handleCreate(event)">
+
+    <!-- Step 1: Type Selection -->
+    <div class="create-section animate-in" style="animation-delay:0.05s">
+      <div class="create-section-label">1. Group Type</div>
+      <div class="type-cards" id="type-cards">
+        <div class="type-card selected" data-type="ROOMMATES" onclick="selectType('ROOMMATES', this)">
+          <div class="type-icon">🏠</div>
+          <div class="type-name">Roommates</div>
+          <div class="type-desc">Rent, bills, groceries — ongoing shared expenses</div>
+        </div>
+        <div class="type-card" data-type="TRIP" onclick="selectType('TRIP', this)">
+          <div class="type-icon">✈️</div>
+          <div class="type-name">Trip</div>
+          <div class="type-desc">Travel expenses — settle up at the end</div>
+        </div>
+        <div class="type-card" data-type="FRIENDS" onclick="selectType('FRIENDS', this)">
+          <div class="type-icon">👥</div>
+          <div class="type-name">Friends</div>
+          <div class="type-desc">Casual one-off splits and running tabs</div>
+        </div>
+        <div class="type-card" data-type="CUSTOM" onclick="selectType('CUSTOM', this)">
+          <div class="type-icon">➕</div>
+          <div class="type-name">Custom</div>
+          <div class="type-desc">Any group, any purpose — fully custom</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Group Name -->
+    <div class="create-section animate-in" style="animation-delay:0.1s">
+      <div class="create-section-label">2. Group Name</div>
+      <div class="form-group">
+        <div class="input-with-icon">
+          <span class="input-icon" id="type-icon-preview">🏠</span>
+          <input class="form-input" id="group-name" type="text"
+                 placeholder="e.g. Goa Trip 2025, Flat 4B..." required maxlength="100" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Invite Members -->
+    <div class="create-section animate-in" style="animation-delay:0.15s">
+      <div class="create-section-label">3. Invite Members (Optional)</div>
+      <p class="text-sm text-secondary" style="margin-bottom:12px;">
+        Add registered members by email. More can be added later.
+      </p>
+      <div id="email-rows">
+        <div class="invite-row" id="email-row-0">
+          <input class="form-input" type="email" placeholder="friend@example.com" id="email-0" />
+          <button type="button" class="btn btn-ghost btn-sm" onclick="removeEmailRow(0)" style="display:none;">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary btn-sm mt-sm" onclick="addEmailRow()">
+        + Add another person
+      </button>
+    </div>
+
+    <!-- Error -->
+    <div id="create-error" class="form-error" style="display:none;"></div>
+
+    <!-- Submit -->
+    <div class="flex gap-md animate-in" style="animation-delay:0.2s;">
+      <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='dashboard.html'">Cancel</button>
+      <button type="submit" class="btn btn-primary btn-lg" id="create-btn" style="flex:1;">
+        <span class="btn-text">🚀 Create Group</span>
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/create-group.js"></script>
+
+</body>
+</html>

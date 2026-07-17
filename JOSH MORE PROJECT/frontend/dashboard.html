@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SplitSmart — Dashboard</title>
+  <meta name="description" content="View and manage all your expense groups in SplitSmart." />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="brand">
+    <div class="brand-icon">💸</div>
+    <span>SplitSmart</span>
+  </div>
+  <div class="navbar-actions">
+    <div class="user-menu" id="user-menu">
+      <div class="avatar avatar-sm" id="nav-avatar" style="background:#7c3aed">?</div>
+      <span class="user-menu-name" id="nav-name">Loading...</span>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="dashboard-container" id="app">
+  <!-- Header -->
+  <div class="dashboard-header animate-in">
+    <h1 class="dashboard-greeting">Good to see you, <span id="user-greeting">there</span>! 👋</h1>
+    <p class="text-secondary">Here are all your active groups.</p>
+  </div>
+
+  <!-- Section: Groups -->
+  <div class="section-header">
+    <span class="section-title">Your Groups</span>
+    <button class="btn btn-secondary btn-sm" onclick="window.location.href='create-group.html'">
+      ➕ New Group
+    </button>
+  </div>
+
+  <!-- Groups Grid -->
+  <div class="groups-grid" id="groups-grid">
+    <!-- Loading skeletons -->
+    <div class="card skeleton" style="height:200px;"></div>
+    <div class="card skeleton" style="height:200px;"></div>
+    <div class="card skeleton" style="height:200px;"></div>
+  </div>
+</div>
+
+<!-- FAB: Create Group -->
+<button class="fab" id="fab-create" onclick="window.location.href='create-group.html'" title="Create New Group">
+  +
+</button>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>

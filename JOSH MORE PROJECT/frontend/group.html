@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SplitSmart — Group</title>
+  <meta name="description" content="View group expenses, add bills, and see live balances." />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <button class="btn btn-ghost btn-sm" onclick="window.location.href='dashboard.html'">← Back</button>
+    <div class="brand" style="font-size:1rem;">
+      <div class="brand-icon" style="width:28px;height:28px;font-size:0.85rem;">💸</div>
+      <span id="nav-group-name">Loading...</span>
+    </div>
+  </div>
+  <div class="navbar-actions">
+    <span id="nav-badge"></span>
+    <div class="avatar avatar-sm" id="nav-avatar" style="background:#7c3aed">?</div>
+    <span class="text-sm font-500" id="nav-name"></span>
+    <button class="btn btn-ghost btn-sm" onclick="Auth.logout(); window.location.href='login.html'">Sign Out</button>
+  </div>
+</nav>
+
+<!-- Three-column layout -->
+<div class="group-layout">
+
+  <!-- ── Left Sidebar: Members + Balances ── -->
+  <aside class="group-sidebar">
+    <div class="group-sidebar-header">
+      <h2 id="sidebar-group-name">...</h2>
+      <p class="text-xs text-muted" id="sidebar-invite-code"></p>
+    </div>
+
+    <div>
+      <div class="section-title text-sm" style="margin-bottom:12px;">👥 Members & Balances</div>
+      <div class="sidebar-members-list" id="members-list">
+        <div class="skeleton" style="height:44px;border-radius:8px;"></div>
+        <div class="skeleton" style="height:44px;border-radius:8px;margin-top:8px;"></div>
+        <div class="skeleton" style="height:44px;border-radius:8px;margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <div class="settle-cta">
+      <button class="btn btn-teal w-full" id="settle-btn"
+              onclick="window.location.href='settle.html?id=' + groupId">
+        ⚡ Settle Up
+      </button>
+      <p class="settle-cta-desc">Run the minimization algorithm to settle all debts with fewest transfers</p>
+
+      <button class="btn btn-whatsapp w-full" id="whatsapp-invite-btn"
+              onclick="shareViaWhatsApp()" style="margin-top:12px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="white" style="flex-shrink:0;">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.558 4.118 1.529 5.845L0 24l6.335-1.517A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-4.987-1.365l-.358-.213-3.761.9.939-3.668-.234-.376A9.783 9.783 0 012.182 12c0-5.422 4.396-9.818 9.818-9.818 5.421 0 9.818 4.396 9.818 9.818 0 5.421-4.397 9.818-9.818 9.818z"/>
+        </svg>
+        Invite via WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Center: Expense Feed ── -->
+  <main class="group-feed-area">
+    <div class="feed-header">
+      <span style="font-size:1.2rem;">💬</span>
+      <div>
+        <div class="font-600" id="feed-group-name">Expense Feed</div>
+        <div class="text-xs text-muted" id="ws-status">Connecting...</div>
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-left:auto;" onclick="loadFeed()">
+        ↺ Refresh
+      </button>
+    </div>
+
+    <div class="feed-scroll" id="feed-scroll">
+      <div class="empty-state">
+        <div class="spinner"></div>
+        <p>Loading expenses...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Right Panel: Add Bill ── -->
+  <aside class="group-bill-panel">
+    <div class="bill-panel-title">➕ Add Expense</div>
+
+    <form class="bill-form" id="bill-form" onsubmit="handleAddBill(event)">
+      <div class="form-group">
+        <label class="form-label" for="bill-desc">Description</label>
+        <input class="form-input" id="bill-desc" type="text" placeholder="e.g. Hotel Room, Petrol..." required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bill-amount">Amount (₹)</label>
+        <input class="form-input" id="bill-amount" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bill-paid-by">Paid By</label>
+        <select class="form-select" id="bill-paid-by" required></select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Split Type</label>
+        <div class="split-toggle">
+          <button type="button" class="split-btn active" data-type="EQUAL" onclick="setSplitType('EQUAL', this)">Equal</button>
+          <button type="button" class="split-btn" data-type="CUSTOM" onclick="setSplitType('CUSTOM', this)">Custom</button>
+          <button type="button" class="split-btn" data-type="PERCENTAGE" onclick="setSplitType('PERCENTAGE', this)">%</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Split With</label>
+        <div id="split-members" class="member-chips"></div>
+      </div>
+
+      <!-- Custom/Percentage inputs (shown conditionally) -->
+      <div id="custom-amounts" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Enter amounts (₹)</label>
+          <div id="custom-inputs"></div>
+        </div>
+      </div>
+
+      <div id="bill-error" class="form-error" style="display:none;"></div>
+
+      <button class="btn btn-primary w-full" id="bill-btn" type="submit">
+        <span class="btn-text">Add Expense</span>
+      </button>
+    </form>
+  </aside>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/group.js"></script>
+
+</body>
+</html>
